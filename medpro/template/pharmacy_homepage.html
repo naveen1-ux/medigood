@@ -1,0 +1,171 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PHARMACY DASHBOARD</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet" />
+
+  <style>
+    body, html {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-image: url('https://t4.ftcdn.net/jpg/05/77/84/27/360_F_577842756_DWiS65lNLDG5DPaozrJk3c9TgkGGBwCb.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+
+    .navbar {
+      background: linear-gradient(135deg, rgba(0, 172, 193, 0.75), rgba(0, 98, 255, 0.75));
+      backdrop-filter: blur(12px);
+      border-radius: 0 0 18px 18px;
+      padding: 1rem 2rem;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.9rem;
+      color: #004aad;
+      background-color: #ffffffcc;
+      padding: 0.4rem 1rem;
+      border-radius: 999px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .navbar-brand img {
+      height: 36px;
+      margin-right: 10px;
+      border-radius: 6px;
+    }
+
+    .navbar-nav .nav-link {
+      color: #ffffff;
+      font-size: 1.1rem;
+      margin-right: 15px;
+      padding: 0.4rem 0.8rem;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .navbar-nav .nav-link:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+      color: #6dd5ed;
+      box-shadow: 0 2px 10px rgba(109, 213, 237, 0.4);
+    }
+
+    .navbar-nav .nav-link.active {
+      color: #6dd5ed;
+      font-weight: bold;
+      background-color: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 8px rgba(109, 213, 237, 0.5);
+    }
+
+    .navbar-toggler {
+      border: none;
+    }
+
+    .navbar-toggler-icon {
+      filter: invert(1);
+    }
+
+    .card {
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-img-top {
+      height: 220px;
+      object-fit: cover;
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+    }
+
+    .card-body {
+      text-align: center;
+    }
+
+    .card-title {
+      font-weight: bold;
+    }
+
+    .medicine-section {
+      margin-top: 120px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        <img src="https://png.pngtree.com/template/20190422/ourmid/pngtree-cross-plus-medical-logo-icon-design-template-image_145195.jpg" alt="Logo" />
+        PHARMACY
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'addmedicine' %}">Add Medicine</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'payment_list' %}">Payment List</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Medicine Display Section -->
+  <div class="container medicine-section">
+    <div class="row">
+      {% if medicines %}
+        {% for item in medicines %}
+          <div class="col-md-4 mb-4">
+            <div class="card shadow-sm">
+              
+              {% if item.image %}
+              <img src="{{ item.image.url }}" class="card-img-top" alt="medicine Image">
+              {% else %}
+              <img src="{% static 'default_medicine.jpg' %}" class="card-img-top" alt="Default medicine Image">
+              {% endif %}
+              
+              <div class="card-body">
+                <h5 class="card-title">{{ item.name }} {{ item.type }} ({{ item.expiry_date }})</h5>
+                <p class="card-text">Description: {{ item.description }}</p>
+
+                <!-- Delete Button -->
+                <form method="post" action="{% url 'delete_medicine' item.id %}">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-danger"
+                    onclick="return confirm('Are you sure you want to delete this medicine?')">
+                    Delete
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p class="btn btn-secondary">No medicines available.</p>
+      {% endif %}
+    </div>
+  </div>
+</body>
+</html>

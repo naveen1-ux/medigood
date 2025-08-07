@@ -1,0 +1,188 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login Page</title>
+  <style>
+    /* General Body Styles */
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+
+    /* Login Container */
+    .login-container {
+      background-color: #fff;
+      padding: 40px 50px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      width: 360px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* Hover Effect */
+    .login-container:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Title */
+    .login-container h2 {
+      text-align: center;
+      color: #333;
+      font-size: 28px;
+      margin-bottom: 20px;
+      animation: fadeIn 1.5s ease-in-out;
+    }
+
+    /* Floating Label Styles */
+    .login-container label {
+      position: absolute;
+      top: 15px;
+      left: 12px;
+      color: #aaa;
+      transition: all 0.3s ease;
+      pointer-events: none;
+    }
+
+    .login-container input:focus + label,
+    .login-container input:not(:placeholder-shown) + label {
+      top: -10px;
+      left: 8px;
+      font-size: 12px;
+      color: #4CAF50;
+    }
+
+    /* Input Styles */
+    .login-container input[type="text"],
+    .login-container input[type="password"] {
+      width: 100%;
+      padding: 15px 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      outline: none;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .login-container input:focus {
+      border-color: #4CAF50;
+      box-shadow: 0 0 5px #4CAF50;
+    }
+
+    /* Password Visibility Toggle */
+    .password-wrapper {
+      position: relative;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #4CAF50;
+      font-size: 14px;
+    }
+
+    /* Button Styles */
+    .login-container button {
+      width: 100%;
+      padding: 14px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .login-container button:hover {
+      background-color: #45a049;
+      transform: scale(1.05);
+    }
+
+    /* Forgot Password Link */
+    .forgot-password {
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .forgot-password a {
+      text-decoration: none;
+      color: #4CAF50;
+      font-size: 14px;
+      transition: color 0.3s ease;
+    }
+
+    .forgot-password a:hover {
+      color: #45a049;
+    }
+
+    /* Animation */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <h2>Login</h2>
+    <form action="#" method="post">
+      {% csrf_token %}
+      
+      <div class="password-wrapper">
+        <input type="text" id="username" name="username" placeholder="Username" required>
+        <label for="username">Username</label>
+      </div>
+
+      <div class="password-wrapper">
+        <input type="password" id="password" name="password" placeholder="Password" required>
+        <label for="password">Password</label>
+        <span class="toggle-password" onclick="togglePassword()">👁️</span>
+      </div>
+
+      <button type="submit">Login</button>
+    </form>
+
+    <div class="forgot-password">
+      <a href="#">Forgot Password?</a>
+    </div>
+  </div>
+
+  <script>
+    function togglePassword() {
+      const passwordField = document.getElementById('password');
+      const toggleIcon = document.querySelector('.toggle-password');
+      if (passwordField.type === 'password') {
+        passwordField.type = 'text';
+        toggleIcon.textContent = '🙈';
+      } else {
+        passwordField.type = 'password';
+        toggleIcon.textContent = '👁️';
+      }
+    }
+  </script>
+
+</body>
+</html>
